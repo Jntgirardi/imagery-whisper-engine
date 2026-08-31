@@ -10,25 +10,26 @@ import {
   Settings,
   Sparkle,
 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import logo from "@/assets/estroque-logo.png.asset.json";
 
 const nav = [
-  { label: "Dashboard", icon: LayoutDashboard, active: true },
-  { label: "Produtos", icon: Package },
-  { label: "Estoque", icon: Warehouse },
-  { label: "Importar NF-e", icon: FileCode2 },
-  { label: "Transferências", icon: Truck, badge: "3" },
-  { label: "Vendas", icon: Receipt },
-  { label: "Fornecedores", icon: Users },
-  { label: "Relatórios", icon: BarChart3 },
-  { label: "Configurações", icon: Settings },
+  { label: "Dashboard", icon: LayoutDashboard, to: "/" as const },
+  { label: "Produtos", icon: Package, to: "/produtos" as const },
+  { label: "Estoque", icon: Warehouse, to: "/estoque" as const },
+  { label: "Importar NF-e", icon: FileCode2, to: "/nfe" as const },
+  { label: "Transferências", icon: Truck, to: "/transferencias" as const, badge: "3" },
+  { label: "Vendas", icon: Receipt, to: "/vendas" as const },
+  { label: "Fornecedores", icon: Users, to: "/fornecedores" as const },
+  { label: "Relatórios", icon: BarChart3, to: "/relatorios" as const },
+  { label: "Configurações", icon: Settings, to: "/configuracoes" as const },
 ];
 
 export function EstroqueSidebar() {
   return (
     <aside className="hidden w-64 shrink-0 flex-col justify-between border-r border-border bg-card px-4 py-6 lg:flex">
       <div>
-        <div className="flex items-center gap-2 px-2">
+        <Link to="/" className="flex items-center gap-2 px-2">
           <img src={logo.url} alt="Logotipo Estroque" className="h-9 w-9 object-contain" />
           <div>
             <p className="font-display text-base font-bold tracking-tight text-foreground">
@@ -38,18 +39,15 @@ export function EstroqueSidebar() {
               Gestão inteligente
             </p>
           </div>
-        </div>
+        </Link>
 
         <nav className="mt-8 space-y-1">
           {nav.map((item) => (
-            <button
+            <Link
               key={item.label}
-              type="button"
-              className={
-                item.active
-                  ? "flex w-full items-center gap-3 rounded-xl bg-mint px-3 py-2.5 text-sm font-semibold text-emerald"
-                  : "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              }
+              to={item.to}
+              activeOptions={{ exact: item.to === "/" }}
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[status=active]:bg-mint data-[status=active]:font-semibold data-[status=active]:text-emerald"
             >
               <item.icon className="h-4 w-4" />
               <span className="flex-1 text-left">{item.label}</span>
@@ -58,7 +56,7 @@ export function EstroqueSidebar() {
                   {item.badge}
                 </span>
               ) : null}
-            </button>
+            </Link>
           ))}
         </nav>
       </div>
